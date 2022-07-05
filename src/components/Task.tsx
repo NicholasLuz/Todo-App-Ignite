@@ -5,17 +5,17 @@ import './task.scss';
 interface TaskProps {
   taskContent: string;
   taskId: string;
-  onDeleteTask: (taskId: string, taskComplete: boolean) => void;
-  onChangeTask: (taskCompleted: boolean) => void;
+  taskIsComplete: boolean;
+  onDeleteTask: (taskId: string) => void;
+  onChangeTask: (taskId: string) => void;
 }
 
-export function Task( { taskContent, taskId, onDeleteTask, onChangeTask }: TaskProps) {
-  const [circleWeight, setCircleWeight ] = useState<IconWeight>('regular')
-  const [circleColor, setCircleColor] = useState<string>('#4EA8DE')
-  const [taskComplete, setTaskComplete] = useState(false);
+export function Task( { taskContent, taskId, taskIsComplete, onDeleteTask, onChangeTask }: TaskProps) {
+  const [circleWeight, setCircleWeight ] = useState<IconWeight>('regular');
+  const [circleColor, setCircleColor] = useState<string>('#4EA8DE');
 
   function handleDeleteTask() {
-    onDeleteTask(taskId, taskComplete);
+    onDeleteTask(taskId);
 
   }
 
@@ -30,17 +30,15 @@ export function Task( { taskContent, taskId, onDeleteTask, onChangeTask }: TaskP
   }
   
   function handleChangeTaskState() {
-    onChangeTask(taskComplete);
-
-    setTaskComplete(!taskComplete);
+    onChangeTask(taskId);
   }
 
   return (
     <>
       <div className='task-wrapper'>
-        {taskComplete ? <CheckCircle className='checked-circle' size='1.5rem' weight='fill' onClick={handleChangeTaskState}/> : <Circle className='circle' size='1.5rem' weight={circleWeight} color={circleColor} onMouseEnter={handleCircleHover} onMouseLeave={handleCircleLeaveHover} onClick={handleChangeTaskState}/>}
+        {taskIsComplete ? <CheckCircle className='checked-circle' size='1.5rem' weight='fill' onClick={handleChangeTaskState}/> : <Circle className='circle' size='1.5rem' weight={circleWeight} color={circleColor} onMouseEnter={handleCircleHover} onMouseLeave={handleCircleLeaveHover} onClick={handleChangeTaskState}/>}
       
-        <span className={taskComplete ? 'checked' : ''}>
+        <span className={taskIsComplete ? 'checked' : ''}>
           {taskContent}
         </span>
 

@@ -8,18 +8,17 @@ import './global.scss';
 interface TasksProps {
   id: string;
   content: string;
-  completed: boolean;
+  isComplete: boolean;
 }
 
 export function App() {
   const [ tasks, setTasks ] = useState<TasksProps[]>([]);
   const [ newTask, setNewTask ] = useState('');
-  const [ tasksCompleted, setTasksCompleted ] = useState(0);
 
   function handleSubmitTask(event: FormEvent) {
     event.preventDefault();
 
-    setTasks([...tasks, {id: uuidv4(), content: newTask, completed: false}]);
+    setTasks([...tasks, {id: uuidv4(), content: newTask, isComplete: false}]);
     setNewTask('');
   }
 
@@ -28,31 +27,24 @@ export function App() {
     setNewTask(event.target.value);
   }
 
-  function deleteTask(taskToDelete: string, taskComplete: boolean) {
+  function deleteTask(taskToDelete: string) {
     const tasksWithoutDeletedOne = tasks.filter(task => {
       return task.id !== taskToDelete;
     });
 
     setTasks(tasksWithoutDeletedOne);
-
-    if (taskComplete) {
-      setTasksCompleted((state) => {
-        return state -1
-      })
-    }
   }
 
-  function changeTaskState(taskCompleted: boolean) {
-    if (!taskCompleted) {
-      setTasksCompleted((state) => {
-        return state + 1
-      });
-    } else {
-      setTasksCompleted((state) => {
-        return state - 1
-      });
-    }
+  function changeTaskState(taskId: string) {
+    const newTasks: TasksProps[] = tasks.map(task => {
+      if (task.id === taskId) {
+        return {...task, isComplete: !task.isComplete}
+      } else {
+        return {...task}
+      }
+    })
 
+    setTasks(newTasks)
   }
 
   function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
@@ -60,6 +52,14 @@ export function App() {
   }
 
   const isNewTaskEmpty = newTask.length === 0;
+
+  const tasksCompleted: number = tasks.reduce((accumulator, value) => {
+    if (value.isComplete) {
+      return accumulator + 1;
+    } else {
+      return accumulator;
+    }
+  }, 0);
 
   return(
   <div>
@@ -132,13 +132,12 @@ export function App() {
                   taskContent={task.content}
                   onDeleteTask={deleteTask}
                   onChangeTask={changeTaskState}
+                  taskIsComplete={task.isComplete}
                 />
               );
             })}
           </div>           
         )}
-
-
       </div>
     </main>
   </div>
