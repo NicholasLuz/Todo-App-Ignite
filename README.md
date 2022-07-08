@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-    <img alt="Todo App" src="https://user-images.githubusercontent.com/101582254/178041753-082154c4-22e9-469a-aa91-3f5f873f906c.png" style="max-width: 100%" />
+    <img alt="Todo App" src="https://user-images.githubusercontent.com/101582254/178043142-1cd7a533-86dd-48c8-9aa6-ef0ba6a1f270.png" style="max-width: 100%" />
 </h1>
 
 <br>
